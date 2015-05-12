@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+
+<style>
+
+.myimgcls{
+
+width: 300px;
+height: 300px;
+}
+
+</style>
+
+<div class="container">
+<div class="panel panel-danger">
+<div class="panel-heading">
+<h1>Listing Photos</h1>
+
+</div>
+<center>
+<br>
+<%= link_to 'New Photo', new_meetup_photo_path(@meetup), class: 'btn btn-primary' %>
+</center>
+<div class="panel-body">
+<center>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @photos.each do |photo| %>
+      
+       <tr>
+       <td><%= image_tag photo.meetuppic.url, class: 'myimgcls img img-circle' %></td>
+       <td><%= link_to 'Destroy',  meetup_photo_path(@meetup ,photo) ,method: :delete , data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</center>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+<br>
+
+<%= link_to 'Back', meetup_path(@meetup) %>

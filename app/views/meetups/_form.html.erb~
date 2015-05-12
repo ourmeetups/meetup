@@ -1,0 +1,248 @@
+<head>
+  <script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script>
+
+</head>
+<div>
+<%= form_for(@meetup) do |f|  %>
+  <% if @meetup.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@meetup.errors.count, "error") %> prohibited this meetup from being saved:</h2>
+
+      <ul>
+      <% @meetup.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+			<div class="form-group">
+				<div class="col-sm-2" >
+					<%= f.label :title %>
+				</div>
+			    	<div class="col-sm-10">
+					<%= f.text_field :title, class: 'form-control' %><br />
+				</div>
+			  </div>
+<br />
+
+			<div class="form-group">
+				<div class="col-sm-2" >
+					<%= f.label :user_id %>
+				</div>
+			    	<div class="col-sm-10">
+					<%= f.text_field :user_id, class: 'form-control' %><br />
+				</div>
+			  </div>
+
+
+
+  
+<br />
+
+			<div class="form-group">
+				<div class="col-sm-2" >
+					<%= f.label :disc %>
+				</div>
+			    	<div class="col-sm-10">
+					<%= f.text_area :disc, class: 'form-control' %><br />
+				</div>
+			  </div>
+
+
+<br />
+
+
+
+
+			
+
+
+
+
+
+  <div class="field">
+   
+    <%= f.hidden_field :lat %>
+  </div>
+  <div class="field">
+   
+    <%= f.hidden_field :long %>
+
+
+
+			<div class="form-group">
+				<div class="col-sm-2" >
+					<%= f.label :country %>
+				</div>
+			    	<div class="col-sm-10">
+					<%= f.text_field :country, class: 'form-control'  %><br />
+				</div>
+			  </div>
+
+
+
+
+     <br>
+       
+
+  </div>
+  
+<input id="me" name="tag_id" type="hidden" value="1">
+
+
+<% @tags.each do |tag| %>
+  <input id="t" type="checkbox" name="tag" value="<%= tag.id%>"><%= tag.title %><br>
+ <br>
+      <% end %>
+
+
+			<div class="form-group">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-11 actions">
+					<%= f.submit 'Submit !' , class: 'btn btn-success' , id: "sub" %>
+					
+				</div>
+			    
+			  </div>
+</div>
+
+<input name= "newtag_id" id="newtag_id" type="hidden">
+<input name= "title" id="newtag_name" type="hidden">
+
+
+<% end %>
+
+
+<input id="new" type="text" name="interest" placeholder="Enter your interest">
+
+<button type="button" onclick="save()">add interest</button>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+
+
+<script >
+var x = document.getElementById("meetup_lat");
+var y = document.getElementById("meetup_long");
+var z = document.getElementById("meetup_country");
+var n = document.getElementById("new");
+var form = document.getElementById("new_meetup");
+
+var ar=[];
+
+function save () {
+
+
+
+<% @tags.each do |tag| %>
+  var len = <%= tag.id %>
+      <% end %>
+newtag_id= len+1;
+newtag_name=n.value;
+document.getElementById("newtag_id").value= newtag_id ;
+document.getElementById("newtag_name").value= newtag_name;
+
+	var br=document.createElement('br');
+	var checkbox = document.createElement('input');
+checkbox.type = "checkbox";
+checkbox.name = "tag";
+ var tito= document.getElementsByName("tag");
+var len = tito.length;
+checkbox.value = len+1;
+checkbox.id = "t";
+checkbox.onchange=function(){
+myFunction();
+};
+
+var label = document.createElement('label')
+label.htmlFor = "id";
+label.appendChild(document.createTextNode(n.value))
+//document.getElementById("sub").parentNode.insertBefore(br,document.getElementById("sub"));
+
+document.getElementById("sub").parentNode.insertBefore(checkbox,document.getElementById("sub"));
+document.getElementById("sub").parentNode.insertBefore(label,document.getElementById("sub"));
+document.getElementById("sub").parentNode.insertBefore(br,document.getElementById("sub"));
+
+// document.getElementById("new_meetup").appendChild(checkbox);
+// document.getElementById("new_meetup").appendChild(label);
+}
+function myFunction(){
+ var tito= document.getElementsByName("tag");
+for(i=0 ; i<tito.length ; i++)
+{			flag=true;
+
+
+if(tito[i].checked)
+{
+
+	for(c=0 ; c<ar.length ; c++)
+	{
+
+if(ar[c] == tito[i].value)
+	{ flag=false; 
+alert("yaaa3");
+	}
+	}
+		if(flag  == true)
+{
+	ar.push(tito[i].value);
+
+}
+
+}
+}
+alert("arrrrr "+ar);
+document.getElementById("me").value=ar;
+}
+
+
+var ss= document.getElementsByName("tag");
+for(i=0 ; i<ss.length ; i++)
+{
+ss[i].onchange= function(){
+
+myFunction();
+
+};
+}
+
+  z.onchange = function(){
+
+
+var address = z.value;
+var geocoder = new google.maps.Geocoder();
+
+geocoder.geocode( { 'address': address}, function(results, status) {
+  var location = results[0].geometry.location;
+  x.value = location.lat();
+    y.value = location.lng();
+
+});
+
+  };
+
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+   // z.setAttribute("onChange", ch());
+
+function showPosition(position) {
+  console.log("hi");
+
+  console.log(position.coords.latitude);
+    x.value = position.coords.latitude ;
+    y.value = position.coords.longitude ;
+    console.log(position.coords.longitude);
+   // console.log(geoplugin_city());
+   console.log(geoplugin_countryName());
+    z.innerHTML = geoplugin_countryName() ;
+    z.value = geoplugin_countryName() ;
+
+
+}
+</script>

@@ -1,0 +1,75 @@
+
+ <div class="panel panel-default">
+    <div class="Panel-heading">
+      <center>
+        <h1>
+        <%= @meetup.title %>
+        </h1>
+      </center>
+    </div>
+    <div class="panel-body">
+      <center>
+        <a href="#" class="btn btn-danger">Home</a>&nbsp;
+        <%= link_to 'Photos', meetup_photos_path(@meetup), :class => "btn btn-danger" %>&nbsp;
+        <%= link_to 'events', meetup_events_path(@meetup), :class => "btn btn-danger" %>&nbsp;
+   <%= link_to 'Back', meetups_path , :class => "btn btn-danger"  %>&nbsp;
+<% if current_user %>  
+<% if  @join %>
+<span class = "btn btn-danger">  joined </span>
+<% else  %>
+
+<%= link_to  'Join'  ,:action => "join" ,:id => @meetup   %>&nbsp; |
+<% end %>
+
+<%= link_to 'Edit', edit_meetup_path(@meetup) , :class => "btn btn-danger" %>&nbsp; |
+     </center>
+<% end %>
+    </div>
+
+  </div>
+
+
+<div class="container">
+
+
+
+<p id="notice"><%= notice %></p>
+
+
+<div class="row">
+      <div class="col-sm-2">
+        <h4><strong style="Color:rgb(169, 68, 70);">Meetup Title:</strong></h4>
+      </div>
+      <div class="col-sm-10">
+        <h4><strong><%= @meetup.title %></strong></h4>
+      </div>
+      </div>
+
+
+
+
+      <div class="row">
+      <div class="col-sm-2">
+        <h4><strong style="Color:rgb(169, 68, 70);">Description:</strong></h4>
+      </div>
+      <div class="col-sm-10">
+        <h4><strong><%= @meetup.disc %></strong></h4>
+      </div>
+      </div>
+
+
+
+
+      <div class="row">
+      <div class="col-sm-2">
+        <h4><strong style="Color:rgb(169, 68, 70);">Location:</strong></h4>
+      </div>
+      <div class="col-sm-10">
+        <h4><strong><%= @meetup.country %></strong></h4>
+      </div>
+      </div>
+
+
+
+
+</div>

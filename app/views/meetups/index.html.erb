@@ -1,0 +1,459 @@
+<head>
+  <script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script>
+
+</head>
+
+
+<div class="container">
+<br />
+  <div class="panel panel-danger">
+    <div class="Panel-heading">
+      <center>
+        <h3>
+        All Meetings Groups
+         <%if current_user%> 	
+        </h3>
+        <%= link_to 'New Meetup', new_meetup_path, class: 'btn btn-primary' %>
+          <%end%>
+      </center>
+    </div>
+    <div class="panel-body">
+     
+      <hr />
+      
+<div class="row">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-3">
+<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+	<h4>search by interest</h4>
+	
+	</div>
+	<div class="col-sm-4">
+	<span class="glyphicon glyphico-search" aria-hidden="true"></span>
+	<select id ="tags" class="form-control">
+	<% @tags.each do |tag| %>
+	 		
+	        <option  value="<%= tag.title %>"><%= tag.title %></option>
+
+	    <% end %>
+
+	</select>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</div>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p id="notice"><%= notice %></p>
+
+
+<div class="row">
+<div class="col-sm-3">
+<h4><strong> Choose Range To Search Within</strong><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </h4>
+</div>
+<div class="col-sm-1">
+<select id="range" class="form-control">
+  <option value=5 >5</option>
+  <option value= 10 >10</option>
+  <option value=15>15</option>
+  <option value="anywhere">anywhere</option>
+</select>
+</div>
+</div>
+
+
+<table id="myTable" class="table table-striped">
+
+</table>
+
+
+
+<br>
+<input id = "test" type ="hidden" > 
+
+ 
+
+
+
+<script>
+r=5;
+var range = document.getElementById("range");
+var tags = document.getElementById("tags");
+
+
+
+
+tags.onchange = function(){
+r=range.value;
+t = tags.value;
+counter=0;
+var arr = [];
+console.log(r);
+for(var i = document.getElementById("myTable").rows.length; i > 0;i--)
+{
+document.getElementById("myTable").deleteRow(i -1);
+}
+
+if(r=="anywhere")
+
+{
+t = tags.value;
+<% @tags.each do |tag| %>
+
+if(t == '<%= tag.title %>')
+     {
+var tagId='<%=tag.id %>'; 
+console.log("1111111111111111111111111111111111111111111111111111111111111111111 " + tagId);
+}
+<%  end %>
+
+<% @tagmeetups.each do |tagmeetup| %>
+ if(tagId == '<%= tagmeetup.tag_id %>')
+ {
+  
+ arr.push('<%= tagmeetup.meetup_id %>');
+
+}
+<%  end %>
+
+console.log("arrrrrrrrrrrrrrrr: "+ arr)
+
+  <% @meetups.each do |meetup| %>
+ for(counter=0 ; counter<arr.length ; counter++)
+         
+         {
+if(arr[counter] == '<%= meetup.id %>')
+{
+
+
+ var lat = <%= meetup.lat %> ;
+        var long = <%= meetup.long %> ;
+  
+ var table = document.getElementById("myTable");
+
+
+    var row = table.insertRow(0);
+    var cell1 = row.insertCell(0);
+   
+   var cell4= row.insertCell(1);
+     var cell5 = row.insertCell(2);
+     var cell6 = row.insertCell(3);
+
+var show='<%= link_to 'Show', meetup %>';
+
+    cell1.innerHTML = "<%= meetup.title %>";
+     cell4.innerHTML = '<%= link_to 'Show', meetup %>';
+<%if current_user %>	
+<% if current_user.id == meetup.user_id %>
+ cell5.innerHTML = '<%= link_to 'Edit', edit_meetup_path(meetup) %>';
+ cell6.innerHTML = '<%= link_to 'Destroy', meetup, method: :delete, data: { confirm: 'Are you sure?' } %>';
+<% end %>
+<% end %>   
+}
+
+         }
+      
+    <% end %>
+
+
+
+
+
+}
+
+init();
+  };
+
+
+
+
+
+
+
+
+
+
+
+range.onchange = function(){
+r=range.value;
+t = tags.value;
+counter=0;
+var arr = [];
+console.log(r);
+for(var i = document.getElementById("myTable").rows.length; i > 0;i--)
+{
+document.getElementById("myTable").deleteRow(i -1);
+}
+
+if(r=="anywhere")
+
+{
+  alert("anywhere");
+t = tags.value;
+<% @tags.each do |tag| %>
+
+if(t == '<%= tag.title %>')
+     {
+var tagId='<%=tag.id %>'; 
+console.log("1111111111111111111111111111111111111111111111111111111111111111111 " + tagId);
+}
+<%  end %>
+
+<% @tagmeetups.each do |tagmeetup| %>
+ if(tagId == "<%= tagmeetup.tag_id %>")
+ {
+  
+ arr.push('<%= tagmeetup.meetup_id %>');
+
+}
+<%  end %>
+
+console.log("arrrrrrrrrrrrrrrr: "+ arr)
+
+  <% @meetups.each do |meetup| %>
+ for(counter=0 ; counter<arr.length ; counter++)
+         
+         {
+if(arr[counter] == "<%= meetup.id %>")
+{
+
+
+ var lat = <%= meetup.lat %> ;
+        var long = <%= meetup.long %> ;
+  
+ var table = document.getElementById("myTable");
+
+
+    var row = table.insertRow(0);
+    var cell1 = row.insertCell(0);
+   
+   var cell4= row.insertCell(1);
+     var cell5 = row.insertCell(2);
+     var cell6 = row.insertCell(3);
+
+var show='<%= link_to 'Show', meetup %>';
+
+    cell1.innerHTML = "<%= meetup.title %>";
+     cell4.innerHTML = '<%= link_to 'Show', meetup %>';
+<%if current_user %>	
+<% if current_user.id == meetup.user_id %>
+ cell5.innerHTML = '<%= link_to 'Edit', edit_meetup_path(meetup) %>';
+     cell6.innerHTML = '<%= link_to 'Destroy', meetup, method: :delete, data: { confirm: 'Are you sure?' } %>';
+<% end %>
+<% end %>
+
+}
+
+         }
+      
+    <% end %>
+
+
+
+
+
+}
+
+init();
+  };
+
+init();
+function init(){
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+
+function showPosition(position) {
+
+   current_lat = position.coords.latitude ;
+    current_long = position.coords.longitude ;
+   // console.log(current_lat);
+
+r=range.value;
+t = tags.value;
+counter=0;
+var arr = [];
+console.log(r);
+    <% @meetups.each do |meetup| %>
+      
+       var lat = <%= meetup.lat %> ;
+        var long = <%= meetup.long %> ;
+    d=  distance(lat,long,(current_lat),(current_long)); 
+//console.log(d);
+if (d < r)
+
+{
+ 
+t = tags.value;
+<% @tags.each do |tag| %>
+
+if(t == '<%= tag.title %>')
+     {
+var tagId='<%=tag.id %>'; 
+}
+<%  end %>
+var meetupId='<%= meetup.id %>';
+<% @tagmeetups.each do |tagmeetup| %>
+console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
+ if(tagId == "<%= tagmeetup.tag_id %>" && '<%= tagmeetup.meetup_id %>' == meetupId )
+ {
+  
+
+
+/////////////////////////
+
+flag=false;
+
+for (counter=0 ; counter<arr.length ; counter++)
+{
+if(arr[counter] == '<%= tagmeetup.meetup_id %>')
+flag=true;
+
+}
+
+if(flag==false)
+{
+ arr.push('<%= tagmeetup.meetup_id %>');
+//alert('<%= tagmeetup.meetup_id %>');
+//alert("push fl arr "+'<%= meetup.title %>')
+
+}
+  ///////
+
+}
+<%  end %>
+
+console.log("arrrrrrrrrrrrrrrr: "+ arr)
+
+}
+
+    <% end %>
+
+  <% @meetups.each do |meetup| %>
+ for(counter=0 ; counter<arr.length ; counter++)
+         
+         {
+if(arr[counter] == "<%= meetup.id %>")
+{
+          console.log("pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp");
+
+
+ var lat = <%= meetup.lat %> ;
+        var long = <%= meetup.long %> ;
+  
+ var table = document.getElementById("myTable");
+
+
+    var row = table.insertRow(0);
+    var cell1 = row.insertCell(0);
+   
+   var cell4= row.insertCell(1);
+     var cell5 = row.insertCell(2);
+     var cell6 = row.insertCell(3);
+
+var show='<%= link_to 'Show', meetup %>';
+
+    cell1.innerHTML = "<%= meetup.title %>";
+     cell4.innerHTML = '<%= link_to 'Show', meetup %>';
+<%if current_user%>
+<% if current_user.id == meetup.user_id %>
+ cell5.innerHTML = '<%= link_to 'Edit', edit_meetup_path(meetup) %>';
+     cell6.innerHTML = '<%= link_to 'Destroy', meetup, method: :delete, data: { confirm: 'Are you sure?' } %>';
+<% end %>
+<% end %>
+
+}
+
+         }
+      
+    <% end %>
+
+
+  
+}
+
+
+
+
+
+
+
+
+
+function distance(lat1, lon1, lat2, lon2 ) {
+
+    var radlat1 = Math.PI * lat1/180
+
+    var radlat2 = Math.PI * lat2/180
+
+    var radlon1 = Math.PI * lon1/180
+
+    var radlon2 = Math.PI * lon2/180
+
+    var theta = lon1-lon2
+
+    var radtheta = Math.PI * theta/180
+
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+
+    dist = Math.acos(dist)
+
+    dist = dist * 180/Math.PI
+
+    dist = dist * 60 * 1.1515
+
+     dist = dist * 1.609344 ;
+console.log(dist);
+
+    return dist
+
+}
+
+
+
+
+</script>
