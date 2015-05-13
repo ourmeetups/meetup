@@ -5,15 +5,7 @@
   <%= @comment.body %>
 </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @comment.user %>
-</p>
-
-<p>
-  <strong>Event:</strong>
-  <%= @comment.event %>
-</p>
-
+<%if current_user && current_user.id==@user.user_id%>
 <td><%= link_to 'Edit', edit_meetup_event_comment_path(@meetup,@event,@comment) %></td>
 <%= link_to 'Back', meetup_event_path(@meetup,@event) %>
+<%end%>

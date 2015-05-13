@@ -31,7 +31,9 @@ joined
 </div>
 <% end %>
 <% end %>
+<%if current_user && current_user.id==@user.user_id%>
 <%= link_to 'Edit', edit_meetup_event_path(@meetup,@event) %> |
+<% end %>
 <%= link_to 'Back', meetup_events_path %>
 
 <table class="table table-striped">
@@ -51,12 +53,17 @@ joined
         
         <td><%= @event.title %></td>
         <td><%= link_to 'Show',  meetup_event_comment_path(@meetup,@event,comment)  %></td>
+       <%if current_user && current_user.id==@user.user_id%>
+
         <td><%= link_to 'Edit', edit_meetup_event_comment_path(@meetup,@event,comment) %></td>
-        <td><%= link_to 'Destroy', meetup_event_comment_path(@meetup,@event,comment), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', meetup_event_comment_path(@meetup,@event,comment), method: :delete, data: { confirm: 'Are you sure?' } %>
+       <%end%>
+</td>
       </tr>
     <% end %>
   </tbody>
 </table>
+<% if  current_user %>
 
 <h4>New Comment</h4>
 
@@ -76,5 +83,5 @@ joined
     <%= f.submit %>
   </div>
 <% end %>
-
+<% end %>
 
